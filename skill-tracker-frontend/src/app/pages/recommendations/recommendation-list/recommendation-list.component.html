@@ -1,0 +1,62 @@
+<!-- ══════════════════════════════════════════════════ -->
+<!-- recommendation-list.component.html                 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Recommandations de Formation</h1>
+      <p class="subtitle" *ngIf="employee">
+        Pour {{ employee.prenom }} {{ employee.nom }} — {{ employee.poste }}
+      </p>
+    </div>
+    <div class="header-btns">
+      <a [routerLink]="['/employees', employeeId]" class="btn-outline">← Retour au profil</a>
+      <button class="btn-primary" (click)="generate()" [disabled]="generating">
+        <span *ngIf="!generating">🔄 Régénérer</span>
+        <span *ngIf="generating" class="loader"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading || generating">
+    <div class="spinner"></div>
+    <span>{{ generating ? 'Génération des recommandations...' : 'Chargement...' }}</span>
+  </div>
+
+  <div class="reco-list" *ngIf="!loading && !generating">
+    <div class="empty-state" *ngIf="recommendations.length === 0">
+      <span class="empty-icon">✨</span>
+      <p>Aucune recommandation générée. Vérifiez que des formations sont enregistrées.</p>
+    </div>
+
+    <div class="reco-card" *ngFor="let reco of recommendations; let i = index">
+      <div class="reco-rank">#{{ i + 1 }}</div>
+      <div class="reco-body">
+        <div class="reco-top">
+          <div>
+            <h4 class="reco-title">{{ reco.titreFormation }}</h4>
+            <div class="reco-meta">
+              <span class="reco-platform">{{ reco.plateforme }}</span>
+              <span>⏱ {{ reco.dureeHeures }}h</span>
+              <span>⭐ {{ reco.rating }}/5</span>
+              <span class="reco-free" *ngIf="reco.gratuit">Gratuit</span>
+              <span class="reco-level">{{ reco.niveau }}</span>
+            </div>
+          </div>
+          <div class="reco-score-circle"
+               [style.background]="getScoreBg(reco.scoreRelevance)"
+               [style.color]="getScoreColor(reco.scoreRelevance)">
+            {{ reco.scoreRelevance }}<small>/100</small>
+          </div>
+        </div>
+
+        <p class="reco-reason">💡 {{ reco.raisonRecommandation }}</p>
+
+        <div class="reco-footer">
+          <a [href]="reco.url" target="_blank" class="btn-primary btn-sm">Accéder à la formation →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

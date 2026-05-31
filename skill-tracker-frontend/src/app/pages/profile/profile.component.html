@@ -1,0 +1,115 @@
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="header">
+
+    <div *ngIf="user as u">
+
+      <h1>👋 Bienvenue {{ u.prenom }} {{ u.nom }}</h1>
+
+      <p class="subtitle">
+        Voici ton espace personnel
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+
+    <div class="stat-card">
+      <h3>⭐ Compétences</h3>
+      <p>{{ userSkills.length }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>📚 Formations</h3>
+      <p>{{ userTrainings.length }}</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>🎯 Recommandations</h3>
+      <p>{{ recommendations.length }}</p>
+    </div>
+
+  </div>
+
+  <!-- PROFILE -->
+  <div class="card" *ngIf="user as u">
+
+    <h2>👤 Mon profil</h2>
+
+    <div class="profile-info">
+
+      <p>
+        <strong>Nom :</strong>
+        {{ u.nom }}
+      </p>
+
+      <p>
+        <strong>Prénom :</strong>
+        {{ u.prenom }}
+      </p>
+
+      <p>
+        <strong>Email :</strong>
+        {{ u.email }}
+      </p>
+
+      <p>
+        <strong>Rôle :</strong>
+        {{ u.role }}
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- SKILLS -->
+  <div class="card">
+
+    <h2>⭐ Mes compétences</h2>
+
+    <div class="skills-container">
+
+      <span
+        class="skill-badge"
+        *ngFor="let s of userSkills"
+      >
+        {{ s.nom }}
+      </span>
+
+      <p *ngIf="userSkills.length === 0">
+        Aucune compétence sélectionnée
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- TRAININGS -->
+  <div class="card">
+
+    <h2>📚 Mes formations</h2>
+
+    <div
+      *ngFor="let t of userTrainings"
+      class="training-item"
+    >
+
+      <h4>{{ t.titre }}</h4>
+
+      <p>
+        {{ t.plateforme }} • {{ t.niveau }}
+      </p>
+
+    </div>
+
+    <p *ngIf="userTrainings.length === 0">
+      Aucune formation disponible
+    </p>
+
+  </div>
+
+</div>

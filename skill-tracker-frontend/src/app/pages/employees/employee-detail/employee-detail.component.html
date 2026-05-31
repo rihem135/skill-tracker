@@ -1,0 +1,116 @@
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- employee-detail.component.html                     -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div><span>Chargement...</span>
+  </div>
+
+  <ng-container *ngIf="!loading && employee">
+    <!-- Header profil -->
+    <div class="profile-header">
+      <div class="profile-avatar">{{ getInitials() }}</div>
+      <div class="profile-info">
+        <h1>{{ employee.prenom }} {{ employee.nom }}</h1>
+        <p>{{ employee.poste }} — {{ employee.departement }}</p>
+        <span class="badge badge-{{ employee.niveauExperience }}">{{ employee.niveauExperience }}</span>
+      </div>
+      <div class="profile-actions">
+        <a [routerLink]="['/employees', employee.id, 'edit']" class="btn-outline">Modifier</a>
+        <a [routerLink]="['/recommendations', employee.id]" class="btn-primary">✨ Recommandations</a>
+      </div>
+    </div>
+
+    <!-- Onglets -->
+    <div class="tabs">
+      <button class="tab" [class.active]="activeTab === 'profil'" (click)="activeTab = 'profil'">Profil</button>
+      <button class="tab" [class.active]="activeTab === 'competences'" (click)="activeTab = 'competences'">
+        Compétences ({{ employee.competences.length }})
+      </button>
+      <button class="tab" [class.active]="activeTab === 'recos'" (click)="activeTab = 'recos'">
+        Recommandations ({{ recommendations.length }})
+      </button>
+      <button class="tab" [class.active]="activeTab === 'objectifs'" (click)="activeTab = 'objectifs'">
+        Objectifs ({{ goals.length }})
+      </button>
+    </div>
+
+    <!-- Contenu onglet Profil -->
+    <div class="card" *ngIf="activeTab === 'profil'">
+      <div class="info-grid">
+        <div class="info-item"><span class="info-label">Email</span><span>{{ employee.email }}</span></div>
+        <div class="info-item"><span class="info-label">Téléphone</span><span>{{ employee.telephone || '—' }}</span></div>
+        <div class="info-item"><span class="info-label">Poste</span><span>{{ employee.poste }}</span></div>
+        <div class="info-item"><span class="info-label">Département</span><span>{{ employee.departement }}</span></div>
+        <div class="info-item"><span class="info-label">Niveau</span><span>{{ employee.niveauExperience }}</span></div>
+        <div class="info-item"><span class="info-label">Créé le</span><span>{{ employee.createdAt | date:'dd/MM/yyyy' }}</span></div>
+      </div>
+    </div>
+
+    <!-- Contenu onglet Compétences -->
+    <div class="card" *ngIf="activeTab === 'competences'">
+      <div class="empty-state" *ngIf="employee.competences.length === 0">
+        <p>Aucune compétence enregistrée.</p>
+      </div>
+      <div class="competence-cards" *ngIf="employee.competences.length > 0">
+        <div class="competence-card" *ngFor="let comp of employee.competences">
+          <div class="comp-top">
+            <span class="comp-name">{{ comp.nom }}</span>
+            <span class="comp-stars">{{ getNiveauStars(comp.niveau) }}</span>
+          </div>
+          <div class="comp-bar-wrap">
+            <div class="comp-bar" [style.width]="(comp.niveau / 5 * 100) + '%'"></div>
+          </div>
+          <span class="comp-date">Acquis le : {{ comp.dateAcquisition || '—' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu onglet Recommandations -->
+    <div class="card" *ngIf="activeTab === 'recos'">
+      <div class="empty-state" *ngIf="recommendations.length === 0">
+        <p>Aucune recommandation générée.</p>
+      </div>
+      <div class="reco-cards" *ngIf="recommendations.length > 0">
+        <div class="reco-card" *ngFor="let reco of recommendations">
+          <div class="reco-top">
+            <div>
+              <span class="reco-title">{{ reco.titreFormation }}</span>
+              <span class="reco-platform">{{ reco.plateforme }} · {{ reco.dureeHeures }}h · {{ reco.gratuit ? 'Gratuit' : 'Payant' }}</span>
+            </div>
+            <div class="reco-score" [style.color]="getScoreColor(reco.scoreRelevance)">
+              {{ reco.scoreRelevance }}
+            </div>
+          </div>
+          <p class="reco-reason">{{ reco.raisonRecommandation }}</p>
+          <a [href]="reco.url" target="_blank" class="reco-link">Accéder à la formation →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu onglet Objectifs -->
+    <div class="card" *ngIf="activeTab === 'objectifs'">
+      <div class="empty-state" *ngIf="goals.length === 0">
+        <p>Aucun objectif de carrière défini.</p>
+      </div>
+      <div class="goal-list" *ngIf="goals.length > 0">
+        <div class="goal-item" *ngFor="let goal of goals">
+          <div class="goal-top">
+            <span class="goal-title">{{ goal.titre }}</span>
+            <span class="badge-status badge-{{ goal.statut }}">{{ goal.statut }}</span>
+          </div>
+          <p class="goal-desc">{{ goal.description }}</p>
+          <div class="goal-progress">
+            <span>Progression : {{ goal.progression }}%</span>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" [style.width]="goal.progression + '%'"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>
+

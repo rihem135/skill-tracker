@@ -1,0 +1,104 @@
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="brand-icon">SC</div>
+      <h1>SkillCareer</h1>
+      <p>Créez votre compte et commencez à gérer les talents de votre organisation</p>
+    </div>
+
+    <div class="auth-features">
+      <div class="feature-item">
+        <span class="feature-icon">*</span>
+        <span>Suivi des compétences en temps réel</span>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">*</span>
+        <span>Recommandations personnalisées</span>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">*</span>
+        <span>Objectifs carrière intelligents</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card">
+
+      <div class="auth-header">
+        <h2>Créer un compte</h2>
+        <p>Rejoignez la plateforme de gestion des talents</p>
+      </div>
+
+      <div class="error-alert" *ngIf="errorMessage">
+        <span>!</span> {{ errorMessage }}
+      </div>
+
+      <form (ngSubmit)="onSubmit()" class="auth-form">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nom</label>
+            <div class="input-wrap">
+              <span class="input-icon">&#64;</span>
+              <input type="text" [(ngModel)]="nom" name="nom" placeholder="Karim" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Prénom</label>
+            <div class="input-wrap">
+              <span class="input-icon">&#64;</span>
+              <input type="text" [(ngModel)]="prenom" name="prenom" placeholder="Ahmed" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Adresse email</label>
+          <div class="input-wrap">
+            <span class="input-icon">&#64;</span>
+            <input type="email" [(ngModel)]="email" name="email" placeholder="vous@exemple.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Rôle</label>
+          <select [(ngModel)]="role" name="role">
+            <option value="EMPLOYEE">Employé</option>
+            
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <div class="input-wrap">
+            <span class="input-icon">#</span>
+            <input type="password" [(ngModel)]="password" name="password" placeholder="********" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Confirmer le mot de passe</label>
+          <div class="input-wrap">
+            <span class="input-icon">#</span>
+            <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="********" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="loading">
+          <span *ngIf="!loading">Créer mon compte</span>
+          <span *ngIf="loading" class="loader"></span>
+        </button>
+
+      </form>
+
+      <p class="auth-link">
+        Déjà un compte ? <a routerLink="/login">Se connecter</a>
+      </p>
+
+    </div>
+  </div>
+</div>

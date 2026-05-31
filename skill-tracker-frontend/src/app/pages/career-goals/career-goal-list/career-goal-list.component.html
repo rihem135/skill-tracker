@@ -1,0 +1,49 @@
+<!-- ══════════════════════════════════════════════════ -->
+<!-- career-goal-list.component.html                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Objectifs de Carrière</h1>
+      <p class="subtitle">{{ goals.length }} objectif(s) enregistré(s)</p>
+    </div>
+    <a routerLink="/career-goals/new" class="btn-primary">+ Nouvel Objectif</a>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div><span>Chargement...</span>
+  </div>
+
+  <div class="card" *ngIf="!loading">
+    <div class="empty-state" *ngIf="goals.length === 0">
+      <span class="empty-icon">🎯</span>
+      <p>Aucun objectif de carrière défini.</p>
+      <a routerLink="/career-goals/new" class="btn-primary">Créer un objectif</a>
+    </div>
+
+    <div class="goal-grid" *ngIf="goals.length > 0">
+      <div class="goal-card" *ngFor="let goal of goals">
+        <div class="goal-card-header">
+          <h4>{{ goal.titre }}</h4>
+          <span class="badge" [class]="getStatusClass(goal.statut)">{{ goal.statut }}</span>
+        </div>
+        <p class="goal-desc">{{ goal.description || 'Pas de description.' }}</p>
+        <div class="goal-meta">
+          <span>📅 {{ goal.dateEcheance | date:'dd/MM/yyyy' }}</span>
+          <span>👤 {{ goal.employeeId }}</span>
+        </div>
+        <div class="goal-progress" *ngIf="goal.progression !== undefined">
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" [style.width]="goal.progression + '%'"></div>
+          </div>
+          <span>{{ goal.progression }}%</span>
+        </div>
+        <div class="goal-actions">
+          <a [routerLink]="['/career-goals', goal.id, 'edit']" class="btn-icon" title="Modifier">✏️</a>
+          <button class="btn-icon btn-danger" (click)="delete(goal.id!)" title="Supprimer">🗑</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

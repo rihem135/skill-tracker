@@ -1,0 +1,25 @@
+# Java / Maven
+target/
+*.class
+*.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+
+# Docker
+.env
+mongo_data/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log

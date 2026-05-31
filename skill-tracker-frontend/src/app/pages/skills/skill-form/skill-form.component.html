@@ -1,0 +1,71 @@
+<!-- ══════════════════════════════════════════════════ -->
+<!-- skill-form.component.html                          -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>{{ isEdit ? 'Modifier la compétence' : 'Nouvelle compétence' }}</h1>
+      <p class="subtitle">{{ isEdit ? 'Mettre à jour les informations' : 'Remplir le formulaire ci-dessous' }}</p>
+    </div>
+    <a routerLink="/skills" class="btn-outline">← Retour</a>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div><span>Chargement...</span>
+  </div>
+
+  <div class="success-alert" *ngIf="successMessage">✅ {{ successMessage }}</div>
+  <div class="error-alert" *ngIf="errorMessage">⚠️ {{ errorMessage }}</div>
+
+  <form (ngSubmit)="onSubmit()" class="form-card" *ngIf="!loading">
+    <div class="form-section">
+      <div class="form-group">
+        <label>Nom *</label>
+        <input type="text" [(ngModel)]="skill.nom" name="nom" placeholder="Angular, Python, Leadership..." required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select [(ngModel)]="skill.categorie" name="categorie">
+            <option value="technique">Technique</option>
+            <option value="soft_skill">Soft Skill</option>
+            <option value="management">Management</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Niveau requis</label>
+          <select [(ngModel)]="skill.niveauRequis" name="niveauRequis">
+            <option value="debutant">Débutant</option>
+            <option value="intermediaire">Intermédiaire</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="skill.description" name="description" rows="4" placeholder="Description de la compétence..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Technologies associées</label>
+        <div class="tech-input-row">
+          <input type="text" [(ngModel)]="techInput" name="techInput" placeholder="ex: TypeScript" (keyup.enter)="addTech()">
+          <button type="button" class="btn-outline" (click)="addTech()">Ajouter</button>
+        </div>
+        <div class="tech-tags">
+          <span class="tech-tag" *ngFor="let t of skill.technologiesAssociees; let i = index">
+            {{ t }} <button type="button" (click)="removeTech(i)">✕</button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/skills" class="btn-outline">Annuler</a>
+      <button type="submit" class="btn-primary" [disabled]="saving">
+        <span *ngIf="!saving">{{ isEdit ? 'Sauvegarder' : 'Créer la compétence' }}</span>
+        <span *ngIf="saving" class="loader"></span>
+      </button>
+    </div>
+  </form>
+</div>
+

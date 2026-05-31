@@ -1,0 +1,203 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── Côté gauche ─────────────────────────────────── */
+.auth-left {
+  width: 420px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  padding: 60px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 48px;
+  flex-shrink: 0;
+}
+
+.auth-brand {
+  .brand-icon {
+    width: 56px; height: 56px;
+    background: #2563eb;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.5);
+  }
+  h1 {
+    font-size: 28px; font-weight: 800; color: #fff;
+    letter-spacing: -0.5px; margin-bottom: 12px;
+  }
+  p {
+    font-size: 15px; color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+  }
+}
+
+.auth-features {
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.feature-item {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; color: rgba(255,255,255,0.75);
+  font-weight: 500;
+
+  .feature-icon {
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+}
+
+/* ── Côté droit ──────────────────────────────────── */
+.auth-right {
+  flex: 1;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 48px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
+}
+
+.auth-header {
+  margin-bottom: 32px;
+  h2 { font-size: 26px; font-weight: 700; color: #111827; letter-spacing: -0.5px; }
+  p  { font-size: 14px; color: #6b7280; margin-top: 6px; }
+}
+
+/* ── Formulaire ──────────────────────────────────── */
+.auth-form {
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+.form-group {
+  display: flex; flex-direction: column; gap: 6px;
+
+  label {
+    font-size: 13px; font-weight: 600; color: #374151;
+  }
+}
+
+.input-wrap {
+  position: relative;
+  display: flex; align-items: center;
+
+  .input-icon {
+    position: absolute; left: 14px;
+    font-size: 15px; color: #9ca3af;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 11px 14px 11px 42px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #111827;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder { color: #d1d5db; }
+
+    &:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+  }
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 13px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 4px;
+  height: 48px;
+
+  &:hover:not(:disabled) {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+  }
+
+  &:disabled { opacity: 0.65; cursor: not-allowed; }
+}
+
+/* ── Loader spinner ──────────────────────────────── */
+.loader {
+  width: 20px; height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Erreur ──────────────────────────────────────── */
+.error-alert {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── Lien ────────────────────────────────────────── */
+.auth-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 13px;
+  color: #6b7280;
+
+  a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+/* ── Select ──────────────────────────────────────── */
+select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+}

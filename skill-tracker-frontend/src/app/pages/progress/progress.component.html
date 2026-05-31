@@ -1,0 +1,97 @@
+<div class="page">
+
+  <h1 class="title">📊 Suivi des formations</h1>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading">
+    ⏳ Chargement...
+  </div>
+
+  <!-- GRID -->
+  <div class="grid" *ngIf="!loading">
+
+    <div class="card" *ngFor="let training of userTrainings">
+
+      <h2>{{ training.titre }}</h2>
+
+      <p class="desc">{{ training.description }}</p>
+
+      <!-- INFO -->
+      <div class="info">
+        <span>⏱ {{ training.dureeHeures }}h</span>
+        <span>⏱ {{ training.timeSpentSeconds }}s</span>
+      </div>
+
+      <!-- STATUS -->
+      <div class="status-display"
+           [ngClass]="training.status?.toLowerCase()">
+
+        {{ training.status }}
+
+      </div>
+
+      <!-- TIMER -->
+      <div class="timer-box">
+
+        <span>⏱ {{ training.timeSpentSeconds }} sec</span>
+
+        <button (click)="toggleTimer(training)"
+                [ngClass]="training.isRunning ? 'pause' : 'start'">
+
+          {{ training.isRunning ? '⏸ Pause' : '▶ Start' }}
+
+        </button>
+
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="progress-bar">
+        <div class="progress-fill"
+             [style.width.%]="training.progress">
+        </div>
+      </div>
+
+      <div class="percent">
+        {{ training.progress | number:'1.0-0' }}%
+      </div>
+
+      <!-- ✅ SAVE BUTTON (CORRIGÉ) -->
+      <div class="save-box">
+
+        <button class="save-btn"
+                (click)="saveProgress(training)">
+
+          💾 Sauvegarder progression
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================== -->
+<!-- 📊 CHARTS SECTION -->
+<!-- ===================== -->
+
+<div class="charts-container">
+
+  <div class="chart-card">
+    <h3>📊 Statut des formations</h3>
+    <canvas #statusChart></canvas>
+  </div>
+
+  <div class="chart-card">
+    <h3>📈 Progression</h3>
+    <canvas #progressChart></canvas>
+  </div>
+
+  <div class="chart-card">
+    <h3>⏱ Temps vs durée</h3>
+    <canvas #hoursChart></canvas>
+  </div>
+
+</div>
+</div>

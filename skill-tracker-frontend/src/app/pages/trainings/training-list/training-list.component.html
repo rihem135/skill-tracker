@@ -1,0 +1,123 @@
+<!-- ══════════════════════════════════════════════════ -->
+<!-- training-list.component.html                       -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Formations</h1>
+      <p class="subtitle">{{ trainings.length }} formation(s) disponible(s)</p>
+    </div>
+    <button class="btn-primary" (click)="showForm = !showForm">+ Nouvelle Formation</button>
+  </div>
+
+  <!-- Formulaire ajout -->
+  <div class="modal-overlay" *ngIf="showForm" (click)="showForm=false">
+    <div class="modal-card modal-large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Nouvelle formation</h3>
+        <button class="modal-close" (click)="showForm=false">✕</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:2">
+          <label>Titre *</label>
+          <input type="text" [(ngModel)]="newTraining.titre" placeholder="Angular Masterclass 2024">
+        </div>
+        <div class="form-group">
+          <label>Plateforme</label>
+          <select [(ngModel)]="newTraining.plateforme">
+            <option>Udemy</option>
+            <option>Coursera</option>
+            <option>LinkedIn Learning</option>
+            <option>YouTube</option>
+            <option>OpenClassrooms</option>
+            <option>Autre</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>URL</label>
+        <input type="url" [(ngModel)]="newTraining.url" placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="newTraining.description" rows="3"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Niveau</label>
+          <select [(ngModel)]="newTraining.niveau">
+            <option value="debutant">Débutant</option>
+            <option value="intermediaire">Intermédiaire</option>
+            <option value="avance">Avancé</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Durée (heures)</label>
+          <input type="number" [(ngModel)]="newTraining.dureeHeures" min="1">
+        </div>
+        <div class="form-group">
+          <label>Note (/5)</label>
+          <input type="number" [(ngModel)]="newTraining.rating" min="0" max="5" step="0.1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="newTraining.gratuit"> Formation gratuite
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Compétences ciblées</label>
+        <div class="skill-checkboxes">
+          <label class="skill-checkbox" *ngFor="let skill of skills">
+            <input type="checkbox" [checked]="isSkillSelected(skill.id!)"
+                   (change)="toggleSkill(skill.id!)">
+            {{ skill.nom }}
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline" (click)="showForm=false">Annuler</button>
+        <button class="btn-primary" (click)="save()" [disabled]="saving">
+          {{ saving ? 'Sauvegarde...' : 'Créer la formation' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div><span>Chargement...</span>
+  </div>
+
+  <div class="trainings-grid" *ngIf="!loading">
+    <div class="empty-state" *ngIf="trainings.length === 0" style="grid-column:1/-1">
+      <span class="empty-icon">📚</span>
+      <p>Aucune formation. Ajoutez-en une.</p>
+    </div>
+
+    <div class="training-card" *ngFor="let t of trainings">
+      <div class="training-top">
+        <span class="training-platform">{{ t.plateforme }}</span>
+        <span class="training-free" *ngIf="t.gratuit">GRATUIT</span>
+      </div>
+      <h4 class="training-title">{{ t.titre }}</h4>
+      <p class="training-desc">{{ t.description | slice:0:100 }}{{ t.description.length > 100 ? '...' : '' }}</p>
+      <div class="training-meta">
+        <span>⏱ {{ t.dureeHeures }}h</span>
+        <span>{{ getStars(t.rating) }} {{ t.rating }}/5</span>
+        <span class="training-level">{{ t.niveau }}</span>
+      </div>
+      <div class="training-footer">
+        <a [href]="t.url" target="_blank" class="btn-outline btn-sm">Accéder →</a>
+        <button class="btn-icon btn-danger" (click)="delete(t.id!)">🗑</button>
+      </div>
+    </div>
+  </div>
+</div>
+

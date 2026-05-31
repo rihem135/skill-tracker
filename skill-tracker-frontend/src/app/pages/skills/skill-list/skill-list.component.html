@@ -1,0 +1,103 @@
+<!-- ══════════════════════════════════════════════════ -->
+<!-- skill-list.component.html                          -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Compétences</h1>
+      <p class="subtitle">{{ skills.length }} compétence(s) dans la bibliothèque</p>
+    </div>
+    <button class="btn-primary" (click)="openAdd()">+ Nouvelle Compétence</button>
+  </div>
+
+  <!-- Modal formulaire -->
+  <div class="modal-overlay" *ngIf="showForm" (click)="showForm=false">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editingSkill ? 'Modifier la compétence' : 'Nouvelle compétence' }}</h3>
+        <button class="modal-close" (click)="showForm=false">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>Nom *</label>
+        <input type="text" [(ngModel)]="newSkill.nom" placeholder="Angular, Python, Leadership...">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select [(ngModel)]="newSkill.categorie">
+            <option value="technique">Technique</option>
+            <option value="soft_skill">Soft Skill</option>
+            <option value="management">Management</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Niveau requis</label>
+          <select [(ngModel)]="newSkill.niveauRequis">
+            <option value="debutant">Débutant</option>
+            <option value="intermediaire">Intermédiaire</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="newSkill.description" rows="3" placeholder="Description de la compétence..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Technologies associées</label>
+        <div class="tech-input-row">
+          <input type="text" [(ngModel)]="techInput" placeholder="ex: TypeScript" (keyup.enter)="addTech()">
+          <button type="button" class="btn-outline" (click)="addTech()">Ajouter</button>
+        </div>
+        <div class="tech-tags">
+          <span class="tech-tag" *ngFor="let t of newSkill.technologiesAssociees; let i = index">
+            {{ t }} <button (click)="removeTech(i)">✕</button>
+          </span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline" (click)="showForm=false">Annuler</button>
+        <button class="btn-primary" (click)="save()" [disabled]="saving">
+          {{ saving ? 'Sauvegarde...' : (editingSkill ? 'Modifier' : 'Créer') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div><span>Chargement...</span>
+  </div>
+
+  <div class="skills-grid" *ngIf="!loading">
+    <div class="empty-state" *ngIf="skills.length === 0" style="grid-column:1/-1">
+      <span class="empty-icon">🎯</span>
+      <p>Aucune compétence. Commencez par en créer une.</p>
+      <button class="btn-primary" (click)="openAdd()">Créer une compétence</button>
+    </div>
+
+    <div class="skill-card" *ngFor="let skill of skills">
+      <div class="skill-card-header">
+        <span class="skill-cat"
+              [style.background]="getCatColor(skill.categorie)"
+              [style.color]="getCatTextColor(skill.categorie)">
+          {{ skill.categorie }}
+        </span>
+        <div class="skill-card-actions">
+          <button class="btn-icon" (click)="openEdit(skill)" title="Modifier">✏️</button>
+          <button class="btn-icon btn-danger" (click)="delete(skill.id!)" title="Supprimer">🗑</button>
+        </div>
+      </div>
+      <h4 class="skill-card-name">{{ skill.nom }}</h4>
+      <p class="skill-card-desc">{{ skill.description || 'Pas de description.' }}</p>
+      <div class="skill-card-footer">
+        <span class="skill-niveau">Requis : {{ skill.niveauRequis }}</span>
+        <div class="tech-mini-tags">
+          <span *ngFor="let t of skill.technologiesAssociees?.slice(0,3)">{{ t }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

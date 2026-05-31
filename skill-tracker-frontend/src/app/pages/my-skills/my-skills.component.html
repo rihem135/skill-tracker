@@ -1,0 +1,81 @@
+<div class="page">
+
+  <h1>🧠 Choisir mes compétences</h1>
+
+  <!-- ⭐ SELECTED CHIPS (NOUVEAU) -->
+  <div class="selected-chips">
+
+    <span class="chip" *ngFor="let s of selectedSkills">
+
+      {{ s.nom }}
+
+      <button (click)="removeSkill(s)">✖</button>
+
+    </span>
+
+  </div>
+
+  <!-- 🔍 SEARCH -->
+  <div class="search-container">
+
+    <input
+      type="text"
+      class="search-input"
+      placeholder="🔍 Rechercher une compétence..."
+      [(ngModel)]="searchTerm"
+    />
+
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="loading">
+    ⏳ Chargement...
+  </div>
+
+  <!-- SKILLS LIST -->
+  <div class="skills-grid" *ngIf="!loading">
+
+    <div class="skill-card"
+         *ngFor="let skill of filteredSkills()"
+         (click)="toggleSkill(skill)"
+         [class.selected]="isSelected(skill)">
+
+      <h3>{{ skill.nom }}</h3>
+
+      <p>{{ skill.description }}</p>
+
+      <div>📂 {{ skill.categorie }}</div>
+
+      <div>🎯 Niveau : {{ skill.niveauRequis }}</div>
+
+      <div class="techs">
+
+        <span *ngFor="let tech of skill.technologiesAssociees">
+          {{ tech }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- EMPTY -->
+  <div *ngIf="!loading && filteredSkills().length === 0">
+    Aucune compétence trouvée
+  </div>
+
+  <!-- 🚀 STICKY SAVE BUTTON (NOUVEAU) -->
+  <div class="sticky-footer">
+
+    <button
+      class="btn-save"
+      (click)="saveSkills()"
+      [disabled]="selectedSkills.length === 0"
+    >
+      💾 Sauvegarder ({{ selectedSkills.length }})
+    </button>
+
+  </div>
+
+</div>

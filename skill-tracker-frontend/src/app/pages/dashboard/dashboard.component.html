@@ -1,0 +1,128 @@
+<!-- src/app/pages/dashboard/dashboard.component.html -->
+<div class="page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Tableau de Bord</h1>
+      <p class="subtitle">Vue globale des compétences et progressions</p>
+    </div>
+    <a routerLink="/employees/new" class="btn-primary">+ Ajouter Employé</a>
+  </div>
+
+  <!-- Loader -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <span>Chargement des données...</span>
+  </div>
+
+  <ng-container *ngIf="!loading && stats">
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-icon">👥</div>
+        <div class="kpi-content">
+          <span class="kpi-value">{{ stats.totalEmployes }}</span>
+          <span class="kpi-label">Employés actifs</span>
+        </div>
+        <a routerLink="/employees" class="kpi-link">Voir tout →</a>
+      </div>
+
+      <div class="kpi-card kpi-green">
+        <div class="kpi-icon">🎯</div>
+        <div class="kpi-content">
+          <span class="kpi-value">{{ stats.totalCompetences }}</span>
+          <span class="kpi-label">Compétences enregistrées</span>
+        </div>
+        <a routerLink="/skills" class="kpi-link">Gérer →</a>
+      </div>
+
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-icon">📚</div>
+        <div class="kpi-content">
+          <span class="kpi-value">{{ stats.totalFormations }}</span>
+          <span class="kpi-label">Formations disponibles</span>
+        </div>
+        <a routerLink="/trainings" class="kpi-link">Explorer →</a>
+      </div>
+
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-icon">✨</div>
+        <div class="kpi-content">
+          <span class="kpi-value">{{ stats.tauxRecoSuivies }}%</span>
+          <span class="kpi-label">Taux de recommandations suivies</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau des employés récents -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Employés récents</h3>
+        <a routerLink="/employees" class="link-all">Voir tous les employés →</a>
+      </div>
+
+      <div class="empty-state" *ngIf="recentEmployees.length === 0">
+        <span class="empty-icon">👥</span>
+        <p>Aucun employé trouvé. <a routerLink="/employees/new">Ajouter le premier</a></p>
+      </div>
+
+      <table class="data-table" *ngIf="recentEmployees.length > 0">
+        <thead>
+          <tr>
+            <th>Employé</th>
+            <th>Poste</th>
+            <th>Département</th>
+            <th>Niveau</th>
+            <th>Compétences</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emp of recentEmployees; let i = index">
+            <td>
+              <div class="table-user">
+                <div class="table-avatar"
+                     [style.background]="getAvatarColor(i)"
+                     [style.color]="getAvatarTextColor(i)">
+                  {{ getInitials(emp) }}
+                </div>
+                <div>
+                  <span class="uname">{{ emp.prenom }} {{ emp.nom }}</span>
+                  <span class="uemail">{{ emp.email }}</span>
+                </div>
+              </div>
+            </td>
+            <td>{{ emp.poste }}</td>
+            <td>{{ emp.departement }}</td>
+            <td>
+              <span class="badge" [class]="getBadgeClass(emp.niveauExperience)">
+                {{ emp.niveauExperience }}
+              </span>
+            </td>
+            <td>
+              <div class="skill-tags">
+                <span class="skill-tag" *ngFor="let c of emp.competences.slice(0, 2)">
+                  {{ c.nom }}
+                </span>
+                <span class="skill-tag more" *ngIf="emp.competences.length > 2">
+                  +{{ emp.competences.length - 2 }}
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="action-btns">
+                <a [routerLink]="['/employees', emp.id]" class="btn-icon" title="Voir">👁</a>
+                <a [routerLink]="['/employees', emp.id, 'edit']" class="btn-icon" title="Modifier">✏️</a>
+                <a [routerLink]="['/recommendations', emp.id]" class="btn-icon" title="Recommandations">✨</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </ng-container>
+</div>
+

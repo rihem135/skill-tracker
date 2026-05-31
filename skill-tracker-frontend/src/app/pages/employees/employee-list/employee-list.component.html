@@ -1,0 +1,89 @@
+<!-- ══════════════════════════════════════════════════ -->
+<!-- employee-list.component.html                       -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Employés</h1>
+      <p class="subtitle">{{ filtered.length }} employé(s) trouvé(s)</p>
+    </div>
+    <a routerLink="/employees/new" class="btn-primary">+ Nouvel Employé</a>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <span>🔍</span>
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()"
+             placeholder="Rechercher un employé...">
+    </div>
+    <select [(ngModel)]="filterDept" (ngModelChange)="applyFilters()">
+      <option value="">Tous les départements</option>
+      <option *ngFor="let d of getDepartements()" [value]="d">{{ d }}</option>
+    </select>
+    <select [(ngModel)]="filterNiveau" (ngModelChange)="applyFilters()">
+      <option value="">Tous les niveaux</option>
+      <option value="junior">Junior</option>
+      <option value="mid">Mid</option>
+      <option value="senior">Senior</option>
+    </select>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div><span>Chargement...</span>
+  </div>
+
+  <div class="card" *ngIf="!loading">
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <span class="empty-icon">👥</span>
+      <p>Aucun employé trouvé.</p>
+      <a routerLink="/employees/new" class="btn-primary">Ajouter le premier employé</a>
+    </div>
+
+    <table class="data-table" *ngIf="filtered.length > 0">
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Poste</th>
+          <th>Département</th>
+          <th>Niveau</th>
+          <th>Compétences</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of filtered; let i = index">
+          <td>
+            <div class="table-user">
+              <div class="table-avatar av-{{ i % 5 }}">{{ getInitials(emp) }}</div>
+              <div>
+                <span class="uname">{{ emp.prenom }} {{ emp.nom }}</span>
+                <span class="uemail">{{ emp.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td>{{ emp.poste }}</td>
+          <td>{{ emp.departement }}</td>
+          <td>
+            <span class="badge badge-{{ emp.niveauExperience }}">{{ emp.niveauExperience }}</span>
+          </td>
+          <td>
+            <div class="skill-tags">
+              <span class="skill-tag" *ngFor="let c of emp.competences.slice(0,2)">{{ c.nom }}</span>
+              <span class="skill-tag more" *ngIf="emp.competences.length > 2">+{{ emp.competences.length - 2 }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="action-btns">
+              <a [routerLink]="['/employees', emp.id]" class="btn-icon" title="Voir">👁</a>
+              <a [routerLink]="['/employees', emp.id, 'edit']" class="btn-icon" title="Modifier">✏️</a>
+              <a [routerLink]="['/recommendations', emp.id]" class="btn-icon" title="Recommandations">✨</a>
+              <button class="btn-icon btn-danger" (click)="delete(emp.id!)" title="Supprimer">🗑</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

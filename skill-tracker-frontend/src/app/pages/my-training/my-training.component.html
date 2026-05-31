@@ -1,0 +1,131 @@
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>📚 Choisir mes formations</h1>
+    <p class="subtitle">Sélectionnez les formations qui vous intéressent</p>
+  </div>
+
+  <!-- COUNTER -->
+  <div class="selected-info">
+    🎓 {{ selectedTrainings.length }} formation(s) sélectionnée(s)
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="🔍 Rechercher une formation..."
+      [(ngModel)]="searchTerm"
+      class="search-input"
+    />
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading">
+    ⏳ Chargement des formations...
+  </div>
+
+  <!-- GRID -->
+  <div *ngIf="!loading" class="trainings-grid">
+
+    <div
+      *ngFor="let training of filteredTrainings(); trackBy: trackById"
+      class="training-card"
+      [class.selected]="isSelected(training)"
+    >
+
+      <div class="card-top">
+        <span class="badge">{{ training.plateforme }}</span>
+
+        <span class="free" *ngIf="training.gratuit">
+          🆓 Gratuit
+        </span>
+      </div>
+
+      <h3 class="title">{{ training.titre }}</h3>
+
+      <p class="desc">{{ training.description }}</p>
+
+      <div class="meta">
+        <span>⏱ {{ training.dureeHeures }}h</span>
+        <span>🎯 {{ training.niveau }}</span>
+        <span>⭐ {{ training.rating }}/5</span>
+      </div>
+
+      <!-- SKILLS -->
+      <div
+        class="skills"
+        *ngIf="training.skillsCiblesIds && training.skillsCiblesIds.length > 0"
+      >
+        <span class="skill-chip">
+          🧠 {{ training.skillsCiblesIds.length }} compétence(s)
+        </span>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+
+        <button
+          *ngIf="!isSelected(training)"
+          class="btn-add"
+          (click)="toggleTraining(training)"
+        >
+          ➕ Ajouter
+        </button>
+
+        <button
+          *ngIf="isSelected(training)"
+          class="btn-selected"
+          (click)="toggleTraining(training)"
+        >
+          ✅ Sélectionnée
+        </button>
+
+        <a
+          class="btn-link"
+          [href]="training.url"
+          target="_blank"
+        >
+          🔗 Voir
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- EMPTY -->
+  <div *ngIf="!loading && filteredTrainings().length === 0" class="empty">
+    📭 Aucune formation trouvée
+  </div>
+
+  <!-- ⭐ FLOATING SAVE BUTTON -->
+  <div class="sticky-footer" *ngIf="selectedTrainings.length > 0">
+
+    <button
+      class="btn-save"
+      (click)="saveTrainings()"
+    >
+      💾 Sauvegarder ({{ selectedTrainings.length }})
+    </button>
+
+  </div>
+
+  <!-- POPUP -->
+  <div class="popup" *ngIf="showPopup">
+
+    <div class="popup-content">
+      <div class="icon">✅</div>
+
+      <h3>Succès</h3>
+
+      <p>Vos formations ont été sauvegardées</p>
+
+      <button (click)="closePopup()">OK</button>
+    </div>
+
+  </div>
+
+</div>
