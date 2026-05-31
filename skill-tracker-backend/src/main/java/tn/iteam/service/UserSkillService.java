@@ -7,6 +7,8 @@ import tn.iteam.dto.SaveSkillsRequest;
 import tn.iteam.model.User;
 import tn.iteam.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserSkillService {
@@ -28,7 +30,19 @@ public class UserSkillService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-        user.setSelectedSkillIds(request.getSkillIds());
+        List<String> existingSkills = user.getSelectedSkillIds();
+
+        if (existingSkills == null) {
+            existingSkills = new java.util.ArrayList<>();
+        }
+
+        for (String skillId : request.getSkillIds()) {
+            if (!existingSkills.contains(skillId)) {
+                existingSkills.add(skillId);
+            }
+        }
+
+        user.setSelectedSkillIds(existingSkills);
 
         userRepository.save(user);
     }
