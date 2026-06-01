@@ -4,61 +4,49 @@ services:
 
   mongodb:
     image: mongo:6
-    container_name: mongodb_skill_tracker
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
     networks:
       - skill-tracker-network
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    deploy:
+      replicas: 1
 
   mongo-express:
     image: mongo-express
-    container_name: mongo_express_skill_tracker
     ports:
       - "8085:8081"
     environment:
       ME_CONFIG_MONGODB_SERVER: mongodb
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
-    depends_on:
-      mongodb:
-        condition: service_healthy
     networks:
       - skill-tracker-network
+    deploy:
+      replicas: 1
 
   backend:
-    build: ./skill-tracker-backend
-    container_name: skill-tracker-backend
-    restart: unless-stopped
+    image: projet-backend:latest
     ports:
       - "8080:8080"
-    depends_on:
-      mongodb:
-        condition: service_healthy
     networks:
       - skill-tracker-network
+    deploy:
+      replicas: 2
 
   frontend:
-    build: ./skill-tracker-frontend
-    container_name: skill-tracker-frontend
-    restart: unless-stopped
+    image: projet-frontend:latest
     ports:
       - "80:80"
-    depends_on:
-      backend:
-        condition: service_started
     networks:
       - skill-tracker-network
+    deploy:
+      replicas: 2
 
 networks:
   skill-tracker-network:
-    driver: bridge
+    driver: overlay
 
 volumes:
   mongo_data:
