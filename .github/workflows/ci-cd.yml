@@ -1,8 +1,12 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [master]
+  workflow_dispatch:    # ← Déclenchement MANUEL uniquement
+    inputs:
+      version:
+        description: 'Version (ex: v1.0.0)'
+        required: false
+        default: 'latest'
 
 jobs:
   build-and-push:
