@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Build Backend Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/skill-tracker-backend:latest ./skill-tracker-backend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/skill-tracker-backend:${{ github.sha }} ./skill-tracker-backend
+      
+      - name: Build Frontend Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/skill-tracker-frontend:latest ./skill-tracker-frontend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/skill-tracker-frontend:${{ github.sha }} ./skill-tracker-frontend
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Push to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/skill-tracker-backend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/skill-tracker-backend:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/skill-tracker-frontend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/skill-tracker-frontend:${{ github.sha }}
+      
+      - name: Deploy to Docker Swarm
+        run: |
+          docker stack deploy -c docker-compose.yml skill-tracker
