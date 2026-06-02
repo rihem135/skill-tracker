@@ -27,7 +27,7 @@ services:
       replicas: 1
 
   backend:
-    image: projet-backend:latest
+    image: rihem135/skill-tracker-backend:latest
     ports:
       - "8080:8080"
     networks:
@@ -36,7 +36,7 @@ services:
       replicas: 2
 
   frontend:
-    image: projet-frontend:latest
+    image: rihem135/skill-tracker-frontend:latest
     ports:
       - "80:80"
     networks:
