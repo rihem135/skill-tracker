@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,7 +33,3 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/skill-tracker-backend:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/skill-tracker-frontend:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/skill-tracker-frontend:${{ github.sha }}
-      
-      - name: Deploy to Docker Swarm
-        run: |
-          docker stack deploy -c docker-compose.yml skill-tracker
