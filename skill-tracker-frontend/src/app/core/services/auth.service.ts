@@ -46,24 +46,23 @@ export class AuthService {
 
   // ─── Sauvegarder la session ───────────────────────
   private saveSession(response: AuthResponse): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('token', response.token);
-      const user: User = {
-        email: response.email,
-        nom: response.nom,
-        prenom: response.prenom,
-        role: response.role
-      };
-      localStorage.setItem('user', JSON.stringify(user));
-    }
-    const user: User = {
-      email: response.email,
-      nom: response.nom,
-      prenom: response.prenom,
-      role: response.role
-    };
-    this.currentUserSubject.next(user);
+
+  const user: User = {
+    email: response.email,
+    nom: response.nom,
+    prenom: response.prenom,
+    role: response.role,
+    posteActuel: response.posteActuel ?? '',
+    objectif: response.objectif ?? ''
+  };
+
+  if (isPlatformBrowser(this.platformId)) {
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('user', JSON.stringify(user));
   }
+
+  this.currentUserSubject.next(user);
+}
 
   // ─── Recuperer le token ───────────────────────────
   getToken(): string | null {
