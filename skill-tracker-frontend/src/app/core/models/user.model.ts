@@ -4,6 +4,9 @@ export interface User {
   nom: string;
   prenom: string;
   role: string;
+  posteActuel: string;
+  objectif: string;
+  skills?: string[];
 }
 
 export interface LoginRequest {
@@ -17,6 +20,8 @@ export interface RegisterRequest {
   email: string;
   password: string;
   role?: string;
+  posteActuel?: string;
+  objectif?: string;
 }
 
 export interface AuthResponse {
@@ -26,5 +31,7 @@ export interface AuthResponse {
   nom: string;
   prenom: string;
   role: string;
+  posteActuel: string;
+  objectif: string;
 }
 
