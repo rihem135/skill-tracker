@@ -1,0 +1,333 @@
+.dashboard-container {
+  padding: 30px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ================= HEADER CARD ================= */
+.header-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 28px 32px;
+  border-radius: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(52, 152, 219, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.header-card::before {
+  content: "👨‍💼";
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  font-size: 120px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.header-card h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-card p {
+  margin: 0;
+  color: #5a6c7e;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ================= TABLE CARD ================= */
+.table-card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #eef2f6;
+  transition: box-shadow 0.3s ease;
+}
+
+.table-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ================= TABLE STYLES ================= */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+thead tr {
+  background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
+}
+
+th {
+  padding: 18px 20px;
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+th:first-child {
+  border-top-left-radius: 20px;
+}
+
+th:last-child {
+  border-top-right-radius: 20px;
+}
+
+tbody tr {
+  transition: all 0.25s ease;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+tbody tr:hover {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+td {
+  padding: 16px 20px;
+  color: #1e293b;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* ===== CENTRER LA CORBEILLE ===== */
+td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* ================= ROLE BADGE ================= */
+.role {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e3a8a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Style différent pour ADMIN si besoin */
+td:has(.role:contains("ADMIN")) .role {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+}
+
+/* ================= DELETE BUTTON ================= */
+.delete-btn {
+  border: none;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 18px;
+  width: 40px;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.delete-btn:hover {
+  background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* ================= EMAIL STYLING ================= */
+td:nth-child(3) {
+  font-family: monospace;
+  font-size: 13px;
+  color: #3498db;
+  font-weight: 500;
+}
+
+/* ================= OBJECTIF COLUMN ================= */
+td:nth-child(6) {
+  max-width: 250px;
+  word-break: break-word;
+  line-height: 1.4;
+  color: #475569;
+  font-style: italic;
+}
+
+/* ================= POSTE ACTUEL ================= */
+td:nth-child(5) {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* ================= NOM/PRÉNOM ================= */
+td:first-child, td:nth-child(2) {
+  font-weight: 600;
+  color: #1a2a3a;
+}
+
+/* ================= EMPTY STATE ================= */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #fafbfd 0%, #f5f7fa 100%);
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* ================= SCROLLBAR POUR TABLEAU RESPONSIVE ================= */
+.table-card {
+  overflow-x: auto;
+}
+
+.table-card::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-card::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.table-card::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  border-radius: 10px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 20px;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+  }
+  
+  td:nth-child(6) {
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+  
+  .header-card {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .header-card h1 {
+    font-size: 22px;
+  }
+  
+  .header-card p {
+    font-size: 13px;
+  }
+  
+  th, td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .role {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+  
+  .delete-btn {
+    padding: 6px 10px;
+    width: 34px;
+    font-size: 16px;
+  }
+  
+  td:nth-child(6) {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-container {
+    padding: 12px;
+  }
+  
+  /* Transformation en carte pour très petits écrans */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  
+  thead tr {
+    display: none;
+  }
+  
+  tbody tr {
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: white;
+    padding: 12px;
+    position: relative;
+  }
+  
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f2f5;
+    text-align: right;
+  }
+  
+  td:last-child {
+    border-bottom: none;
+  }
+  
+  td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Ajout des labels personnalisés */
+  td:first-child::before { content: "👤 NOM"; }
+  td:nth-child(2)::before { content: "📝 PRÉNOM"; }
+  td:nth-child(3)::before { content: "✉️ EMAIL"; }
+  td:nth-child(4)::before { content: "🎯 RÔLE"; }
+  td:nth-child(5)::before { content: "💼 POSTE"; }
+  td:nth-child(6)::before { content: "🚀 OBJECTIF"; }
+  td:nth-child(7)::before { content: "⚙️ ACTION"; }
+  
+  .delete-btn {
+    align-self: flex-end;
+    margin: 0;
+  }
+  
+  td:last-child {
+    text-align: right;
+    justify-content: flex-end;
+  }
+}

@@ -1,106 +1,77 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { DashboardService } from '../../core/services/dashboard.service';
-import { EmployeeService } from '../../core/services/employee.service';
-import { DashboardStats, Employee } from '../../core/models/all-models';
+
+import { UserService } from '../../core/services/user.service';
+import { User } from '../../core/models/all-models';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
 
-  stats: DashboardStats | null = null;
-  recentEmployees: Employee[] = [];
-  loading = true;
+  users: User[] = [];
+  loading = false;
 
-  constructor(
-    private dashboardService: DashboardService,
-    private employeeService: EmployeeService,
-    private router: Router
-  ) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
+    this.loadUsers();
+  }
 
-    // 🔐 ROLE CHECK (ADMIN ONLY)
-    const role = localStorage.getItem('role');
+  loadUsers(): void {
 
-    if (role !== 'ADMIN') {
-      this.router.navigate(['/profile']);
+  this.loading = true;
+
+  this.userService.getAllUsers().subscribe({
+    next: (data) => {
+
+      this.users = data.filter(
+        user => user.role?.toUpperCase() !== 'ADMIN'
+      );
+
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error(err);
+      this.loading = false;
+    }
+  });
+
+}
+
+  deleteUser(user: User): void {
+
+    const confirmed = confirm(
+      `Voulez-vous supprimer ${user.prenom} ${user.nom} ?`
+    );
+
+    if (!confirmed) {
       return;
     }
 
-    this.loadStats();
-    this.loadEmployees();
-  }
+    this.userService.deleteUser(user.id!).subscribe({
 
-  // 📊 Stats
-  loadStats(): void {
-    this.dashboardService.getStats().subscribe({
-      next: (data) => {
-        this.stats = data;
-        this.loading = false;
+      next: () => {
+
+        this.users =
+          this.users.filter(
+            u => u.id !== user.id
+          );
+
+        alert('✅ Utilisateur supprimé');
+
       },
-      error: () => {
-        this.loading = false;
+
+      error: (err) => {
+        console.error(err);
+        alert('❌ Erreur lors de la suppression');
       }
+
     });
-  }
 
-  // 👥 Employees
-  loadEmployees(): void {
-    this.employeeService.getAll().subscribe({
-      next: (data) => {
-        this.recentEmployees = data.slice(0, 5);
-      },
-      error: () => {
-        this.recentEmployees = [];
-      }
-    });
-  }
-
-  // 🏷 Badge skill level
-  getBadgeClass(niveau: string): string {
-    const map: any = {
-      junior: 'badge-junior',
-      mid: 'badge-mid',
-      senior: 'badge-senior'
-    };
-    return map[niveau] || 'badge-junior';
-  }
-
-  // 👤 Initiales sécurisées
-  getInitials(emp: Employee): string {
-    return (
-      (emp.prenom?.[0] || '') +
-      (emp.nom?.[0] || '')
-    ).toUpperCase();
-  }
-
-  // 🎨 Avatar colors
-  getAvatarColor(i: number): string {
-    const colors = [
-      '#dbeafe',
-      '#d1fae5',
-      '#fef3c7',
-      '#ede9fe',
-      '#fee2e2'
-    ];
-    return colors[i % colors.length];
-  }
-
-  getAvatarTextColor(i: number): string {
-    const colors = [
-      '#1d4ed8',
-      '#065f46',
-      '#92400e',
-      '#5b21b6',
-      '#991b1b'
-    ];
-    return colors[i % colors.length];
   }
 }

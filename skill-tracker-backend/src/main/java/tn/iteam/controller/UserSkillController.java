@@ -1,4 +1,5 @@
-package tn.iteam.user.controller;
+//package tn.iteam.user.controller;
+package tn.iteam.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

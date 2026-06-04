@@ -31,6 +31,10 @@ public class User {
 
     private String prenom;
 
+    private String posteActuel;
+
+    private String objectif;
+
     @Builder.Default
     private String role = "EMPLOYEE"; // ADMIN, EMPLOYEE
 
@@ -51,4 +55,5 @@ public class User {
     private List<String> skills;
 
     private List<TrainingProgress> trainingProgress;
+
 }

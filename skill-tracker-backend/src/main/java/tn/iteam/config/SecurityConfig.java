@@ -75,12 +75,10 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🔥 IMPORTANT - MODIFICATION ICI
-                        // AVANT: .requestMatchers("/user/**").authenticated()
-                        // APRÈS: .requestMatchers("/api/user/**").authenticated()
                         .requestMatchers("/api/user/**").authenticated()
 
                         .requestMatchers(
+                                "/api/users/**",
                                 "/api/trainings/**",
                                 "/api/recommendations/**",
                                 "/api/career-goals/**",

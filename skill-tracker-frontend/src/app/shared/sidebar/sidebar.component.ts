@@ -18,9 +18,9 @@ import { AuthService } from '../../core/services/auth.service';
         <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
           <span class="nav-icon">⊞</span><span>Dashboard</span>
         </a>
-        <a class="nav-item" routerLink="/employees" routerLinkActive="active">
+        <!--<a class="nav-item" routerLink="/employees" routerLinkActive="active">
           <span class="nav-icon">👥</span><span>Employés</span>
-        </a>
+        </a>-->
         <a class="nav-item" routerLink="/skills" routerLinkActive="active">
           <span class="nav-icon">🎯</span><span>Compétences</span>
         </a>
