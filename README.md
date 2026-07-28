@@ -97,9 +97,9 @@ docker stack rm skill-tracker
 docker swarm leave --force
 
 📊 Services déployés
+Service	Image	Port	Réplicas
+Backend	rihem135/skill-tracker-backend	8080	2
+Frontend	rihem135/skill-tracker-frontend	80	2
+MongoDB	mongo:6	27017	1
+Mongo-Express	mongo-express	8081	1
 
-Service	       Image	                          Port	 Réplicas
-Backend	       rihem135/skill-tracker-backend	  8080	 2
-Frontend	     rihem135/skill-tracker-frontend	80	   2
-MongoDB 	     mongo:6	                        27017	 1
-Mongo-Express	 mongo-express	                  8081	 1
